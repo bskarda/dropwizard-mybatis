@@ -135,6 +135,12 @@ public final class SqlSessionFactoryProvider {
             return this;
         }
 
+        /**
+         * Add an object factory to the builder
+         * 
+         * @param factory
+         * @return 
+         */
         public Builder objectFactory(ObjectFactory factory) {
             this.objectFactory = factory;
             return this;
