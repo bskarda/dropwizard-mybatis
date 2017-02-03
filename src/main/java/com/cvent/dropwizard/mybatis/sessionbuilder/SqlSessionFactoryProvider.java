@@ -34,7 +34,6 @@ public final class SqlSessionFactoryProvider {
     private final Map<Class<?>, Class<?>> typeClassToTypeHandlerClassMap;
     private final Map<String, Class<?>> typeToAliasClassMap;
     private final ObjectFactory objectFactory;
-//    //private final MybatisConfigurationSettings mybatisConfigurationSettings;
     private final Map<String, Object> mybatisConfigurationSettings;
 
     /**
@@ -65,7 +64,6 @@ public final class SqlSessionFactoryProvider {
         this.objectFactory = objectFactory;
         this.mybatisConfigurationSettings = mybatisConfigurationSettingsMap;
         sessionFactories = dataSourceFactories.convert((env, dataSource) -> buildSessionFactory(dataSource, env));
-        //this.mybatisConfigurationSettings = new MybatisConfigurationSettings();
     }
 
     /**
@@ -230,18 +228,18 @@ public final class SqlSessionFactoryProvider {
             sessionFactory.getConfiguration().setObjectFactory(objectFactory);
         }
 
-        //Only add to it after it's be initialized.  This is used mainly for "templates"
-        if (sessionFactories != null) {
-            sessionFactories.put(environmentName, sessionFactory);
-        }
-
-        mybatisConfigurationSettings.forEach((settingName, value) -> {
+        mybatisConfigurationSettings.forEach((settingName, configSettingObject) -> {
             try {
-                PropertyUtils.setSimpleProperty(sessionFactory.getConfiguration(), settingName, value);
+                PropertyUtils.setSimpleProperty(sessionFactory.getConfiguration(), settingName, configSettingObject);
             } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
         });
+
+        //Only add to it after it's be initialized.  This is used mainly for "templates"
+        if (sessionFactories != null) {
+            sessionFactories.put(environmentName, sessionFactory);
+        }
 
         return sessionFactory;
     }
