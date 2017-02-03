@@ -5,10 +5,12 @@ import com.cvent.dropwizard.mybatis.datasource.ConfigurableLazyDataSourceFactory
 import com.cvent.pangaea.MultiEnvAware;
 import io.dropwizard.db.ManagedDataSource;
 import io.dropwizard.setup.Environment;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +34,8 @@ public final class SqlSessionFactoryProvider {
     private final Map<Class<?>, Class<?>> typeClassToTypeHandlerClassMap;
     private final Map<String, Class<?>> typeToAliasClassMap;
     private final ObjectFactory objectFactory;
+//    //private final MybatisConfigurationSettings mybatisConfigurationSettings;
+    private final Map<String, Object> mybatisConfigurationSettings;
 
     /**
      * Create a new provider instance
@@ -49,7 +53,8 @@ public final class SqlSessionFactoryProvider {
                                       List<Class<?>> sqlMappers,
                                       Map<Class<?>, Class<?>> typeClassToTypeHandlerClassMap,
                                       Map<String, Class<?>> typeToAliasClassMap,
-                                      ObjectFactory objectFactory) {
+                                      ObjectFactory objectFactory,
+                                      Map<String, Object> mybatisConfigurationSettingsMap) {
         this.dropwizardEnvironment = dropwizardEnvironment;
         this.applicationName = applicationName;
         this.dataSourceFactories = dataSourceFactories;
@@ -58,7 +63,9 @@ public final class SqlSessionFactoryProvider {
         this.typeClassToTypeHandlerClassMap = typeClassToTypeHandlerClassMap;
         this.typeToAliasClassMap = typeToAliasClassMap;
         this.objectFactory = objectFactory;
+        this.mybatisConfigurationSettings = mybatisConfigurationSettingsMap;
         sessionFactories = dataSourceFactories.convert((env, dataSource) -> buildSessionFactory(dataSource, env));
+        //this.mybatisConfigurationSettings = new MybatisConfigurationSettings();
     }
 
     /**
@@ -74,6 +81,7 @@ public final class SqlSessionFactoryProvider {
         private final Environment dropwizardEnvironment;
         private final String applicationName;
         private ObjectFactory objectFactory;
+        private final Map<String, Object> mybatisConfigurationSettingsMap = new HashMap<>();
 
         /**
          * A new Builder
@@ -147,6 +155,17 @@ public final class SqlSessionFactoryProvider {
         }
 
         /**
+         * Add a new MyBatis Configuration Setting.
+         * @param configName
+         * @param configSettingObject
+         * @return
+         */
+        public Builder addConfigurationSettings(String configName, Object configSettingObject) {
+            this.mybatisConfigurationSettingsMap.put(configName, configSettingObject);
+            return this;
+        }
+
+        /**
          * Create a new SqlSessionFactoryProvider based on the attributes that have been added to this builder
          * 
          * @return a new instance of SqlSessionFactoryProvider
@@ -159,7 +178,8 @@ public final class SqlSessionFactoryProvider {
                     sqlMappers,
                     typeClassToTypeHandlerClassMap,
                     typeToAliasClassMap,
-                    objectFactory);
+                    objectFactory,
+                    mybatisConfigurationSettingsMap);
         }
 
     }
@@ -214,6 +234,14 @@ public final class SqlSessionFactoryProvider {
         if (sessionFactories != null) {
             sessionFactories.put(environmentName, sessionFactory);
         }
+
+        mybatisConfigurationSettings.forEach((settingName, value) -> {
+            try {
+                PropertyUtils.setSimpleProperty(sessionFactory.getConfiguration(), settingName, value);
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         return sessionFactory;
     }
