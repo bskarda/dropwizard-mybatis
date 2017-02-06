@@ -5,12 +5,11 @@ import com.cvent.dropwizard.mybatis.datasource.ConfigurableLazyDataSourceFactory
 import com.cvent.pangaea.MultiEnvAware;
 import io.dropwizard.db.ManagedDataSource;
 import io.dropwizard.setup.Environment;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -230,8 +229,10 @@ public final class SqlSessionFactoryProvider {
 
         mybatisConfigurationSettings.forEach((settingName, configSettingObject) -> {
             try {
-                PropertyUtils.setSimpleProperty(sessionFactory.getConfiguration(), settingName, configSettingObject);
-            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                Field field = sessionFactory.getConfiguration().getClass().getDeclaredField(settingName);
+                field.setAccessible(true);
+                field.set(sessionFactory.getConfiguration(), configSettingObject);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
         });
