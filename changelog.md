@@ -1,4 +1,6 @@
 # Change Log
+## [3.1.7]
+- Update to pangaea 1.0.4
 
 ## [3.1.3]
 
@@ -6,7 +8,7 @@
 
 ## [3.1.2]
 
- - Fix NullPointerException in SqlSessionFactoryProvider when using `null` environment name with default environment 
+ - Fix NullPointerException in SqlSessionFactoryProvider when using `null` environment name with default environment
  configuration
 
 ## [3.1.1]
