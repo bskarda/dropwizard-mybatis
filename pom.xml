@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>dropwizard-mybatis</artifactId>
-    <version>3.1.8</version>
+    <version>3.1.9-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>dropwizard-mybatis</name>
@@ -94,7 +94,7 @@
         <url>https://github.com/cvent/dropwizard-mybatis</url>
         <connection>scm:git:git@github.com/cvent/dropwizard-mybatis.git</connection>
         <developerConnection>scm:git:git@github.com:cvent/dropwizard-mybatis.git</developerConnection>
-        <tag>dropwizard-mybatis-3.1.8</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <licenses>
