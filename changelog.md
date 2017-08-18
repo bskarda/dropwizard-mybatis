@@ -1,4 +1,7 @@
 # Change Log
+## [3.1.9] 2017-08-18
+- Added UUIDObjectTypeHandler
+
 ## [3.1.7]
 - Update to pangaea 1.0.4
 
