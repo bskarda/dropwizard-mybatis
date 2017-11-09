@@ -1,4 +1,19 @@
 # Change Log
+## [3.2.0]
+- **Breaking change**: Lifted `SqlSessionFactoryProvider` into an interface. Please use `DefaultSqlSessionFactory.Builder` to instantiate instances.
+- Added the `MyBatisMapperInvoker` to simplify data access code:
+```java
+// (initialization)
+WrappedInvoker<MyMapper> dataAccess = new MyBatisMapperInvoker<>(MyMapper.class, sqlSessionFactoryProvider);
+
+// (business logic)
+final IdType id = getIdFromRequest();
+MyEntity entity = dataAccess.invoke(mapper -> mapper.getById(id));
+dataAccess.invoke(mapper -> mapper.createEntity(new MyEntity()));
+```
+
+Also added two classes for testing purposes, `IdentityWrappedInvoker` and `MyBatisMapperIdentityInvoker` which are identity monadic versions of these new classes. 
+
 ## [3.1.9] 2017-08-18
 - Added UUIDObjectTypeHandler
 
