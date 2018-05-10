@@ -1,6 +1,6 @@
 # Change Log
 ## [3.2.0]
-- **Breaking change**: Lifted `SqlSessionFactoryProvider` into an interface. Please use `DefaultSqlSessionFactory.Builder` to instantiate instances.
+- **Breaking change**: Lifted `SqlSessionFactoryProvider` into an interface. Please use `DefaultSqlSessionFactoryProvider.Builder` to instantiate instances.
 - Added the `MyBatisMapperInvoker` to simplify data access code:
 ```java
 // (initialization)
