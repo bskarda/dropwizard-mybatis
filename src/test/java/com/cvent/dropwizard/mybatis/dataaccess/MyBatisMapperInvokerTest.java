@@ -13,6 +13,9 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Mybatis mapper invoker test
+ */
 public class MyBatisMapperInvokerTest {
     // I love Java so much
     private final SqlSessionFactoryProvider sqlSessionFactoryProvider = mock(SqlSessionFactoryProvider.class);

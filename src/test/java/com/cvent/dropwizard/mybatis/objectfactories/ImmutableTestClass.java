@@ -1,6 +1,9 @@
 package com.cvent.dropwizard.mybatis.objectfactories;
 
-public class ImmutableTestClass {
+/**
+ * An immutable test class
+ */
+public final class ImmutableTestClass {
 
     private int value;
 

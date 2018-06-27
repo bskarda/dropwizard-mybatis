@@ -1,4 +1,7 @@
 # Change Log
+## [4.0.0]
+- Now supports Dropwizard 1.X
+
 ## [3.2.0]
 - **Breaking change**: Lifted `SqlSessionFactoryProvider` into an interface. Please use `DefaultSqlSessionFactoryProvider.Builder` to instantiate instances.
 - Added the `MyBatisMapperInvoker` to simplify data access code:

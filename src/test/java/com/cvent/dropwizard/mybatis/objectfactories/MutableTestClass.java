@@ -1,5 +1,8 @@
 package com.cvent.dropwizard.mybatis.objectfactories;
 
+/**
+ * A mutable test class
+ */
 public class MutableTestClass {
 
     private int value;

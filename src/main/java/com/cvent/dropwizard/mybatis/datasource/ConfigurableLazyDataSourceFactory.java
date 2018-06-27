@@ -17,8 +17,7 @@ public class ConfigurableLazyDataSourceFactory extends DataSourceFactory {
 
     /** {@inheritDoc} */
     @Override
-    public ManagedDataSource build(MetricRegistry metricRegistry, String name) throws
-            ClassNotFoundException {
+    public ManagedDataSource build(MetricRegistry metricRegistry, String name) {
         ManagedDataSource managedDataSource = super.build(metricRegistry, name);
 
         if (isLazy) {

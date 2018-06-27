@@ -5,7 +5,7 @@ import com.cvent.dropwizard.mybatis.datasource.ConfigurableLazyDataSourceFactory
 import com.cvent.pangaea.MultiEnvAware;
 import io.dropwizard.db.ManagedDataSource;
 import io.dropwizard.setup.Environment;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -192,14 +192,10 @@ public final class DefaultSqlSessionFactoryProvider implements SqlSessionFactory
     private SqlSessionFactory buildSessionFactory(ConfigurableLazyDataSourceFactory dataSource,
             String environmentName) {
         String dataSourceName = String.format("%s-%s-sql", applicationName, environmentName);
-        SqlSessionFactory sessionFactory;
 
-        try {
-            ManagedDataSource ds = dataSource.build(dropwizardEnvironment.metrics(), dataSourceName);
-            sessionFactory = new MyBatisFactory().build(dropwizardEnvironment, dataSource, ds, dataSourceName);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        ManagedDataSource ds = dataSource.build(dropwizardEnvironment.metrics(), dataSourceName);
+        SqlSessionFactory sessionFactory = new MyBatisFactory()
+                .build(dropwizardEnvironment, dataSource, ds, dataSourceName);
 
         for (Map.Entry<Class<?>, Class<?>> typeClassToTypeHandlerClassEntry :
                 typeClassToTypeHandlerClassMap.entrySet()) {
