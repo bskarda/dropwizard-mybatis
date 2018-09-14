@@ -1,4 +1,8 @@
 # Change Log
+## [4.0.2]
+- Update to dropwizard 1.3.5
+- Update to pangaea 3.0.0
+
 ## [4.0.0]
 - Now supports Dropwizard 1.X
 
