@@ -1,4 +1,7 @@
 # Change Log
+## [4.0.3]
+- Update to dropwizard 1.3.7
+
 ## [4.0.2]
 - Update to dropwizard 1.3.5
 - Update to pangaea 3.0.0
