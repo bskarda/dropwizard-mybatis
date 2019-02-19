@@ -1,4 +1,7 @@
 # Change Log
+## [4.0.4]
+- Added JsonTypeHandler
+
 ## [4.0.3]
 - Update to dropwizard 1.3.7
 
